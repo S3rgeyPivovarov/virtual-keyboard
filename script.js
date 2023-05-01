@@ -49,9 +49,9 @@ const keyArray = [
   { key: "B", altKey: "", ruKey: "И", ruAltKey: "" },
   { key: "N", altKey: "", ruKey: "Т", ruAltKey: "" },
   { key: "M", altKey: "", ruKey: "Ь", ruAltKey: "" },
-  { key: "\\<", altKey: "\\>", ruKey: "Б", ruAltKey: "" },
-  { key: "\\.", altKey: "\\>", ruKey: "Ю", ruAltKey: "" },
-  { key: "\\/", altKey: "\\?", ruKey: ".", ruAltKey: "," },
+  { key: ",", altKey: "<", ruKey: "Б", ruAltKey: "" },
+  { key: ".", altKey: ">", ruKey: "Ю", ruAltKey: "" },
+  { key: "/", altKey: "?", ruKey: ".", ruAltKey: "," },
   { key: "Shift", altKey: "", ruKey: "Shift", ruAltKey: "" },
   { key: "Ctrl", altKey: "", ruKey: "Ctrl", ruAltKey: "" },
   { key: "Fn", altKey: "", ruKey: "Fn", ruAltKey: "" },
@@ -88,30 +88,58 @@ keyArray.forEach((element) => {
 
 const button = document.querySelectorAll(".button");
 
+let isCapsLock = false;
+
 document.addEventListener("keydown", function (event) {
-  if (event.key === "Shift") {
+  console.log(event.key);
+  if (event.key === "CapsLock") {
+    isCapsLock = !isCapsLock;
     button.forEach((element) => {
       element.textContent =
         element.textContent.length === 1
-          ? element.textContent.toUpperCase()
+          ? isCapsLock
+            ? element.textContent.toUpperCase()
+            : element.textContent.toLowerCase()
           : element.textContent;
+    });
+  }
+});
+
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Shift") {
+    let i = 0;
+    button.forEach((element) => {
+      element.textContent =
+        element.textContent.length === 1
+          ? element.textContent.toUpperCase() ===
+            element.textContent.toLowerCase()
+            ? keyArray[i].altKey
+            : isCapsLock
+            ? element.textContent.toUpperCase()
+            : element.textContent.toLowerCase()
+          : element.textContent;
+      i += 1;
     });
   }
 });
 
 document.addEventListener("keyup", function (event) {
   if (event.key === "Shift") {
+    let i = 0;
     button.forEach((element) => {
       element.textContent =
         element.textContent.length === 1
-          ? element.textContent.toLowerCase()
+          ? element.textContent.toUpperCase() ===
+            element.textContent.toLowerCase()
+            ? keyArray[i].key
+            : isCapsLock
+            ? element.textContent.toLowerCase()
+            : element.textContent.toUpperCase()
           : element.textContent;
+      i += 1;
     });
   }
 });
-
-const isCapsLock = event.getModifierState("CapsLock");
-console.log(isCapsLock);
 
 button.forEach((element) => {
   element.addEventListener("click", (event) => {
