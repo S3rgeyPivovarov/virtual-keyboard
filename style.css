@@ -36,6 +36,7 @@
   display: flex;
   flex-wrap: wrap;
   margin: 10px;
+  transition: 0.1s;
 }
 
 .button {
@@ -49,5 +50,4 @@
 
 .button:active {
   outline: 4px solid #ffffff;
-  transition: 0.1s;
 }

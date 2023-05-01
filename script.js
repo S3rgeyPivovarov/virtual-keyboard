@@ -122,6 +122,23 @@ document.addEventListener("keydown", function (event) {
   }
 });
 
+button.forEach((element) => {
+  element.addEventListener("click", (event) => {
+    if (element.textContent === "Caps Lock") {
+      isCapsLock = !isCapsLock;
+      console.log(isCapsLock);
+      button.forEach((element) => {
+        element.textContent =
+          element.textContent.length === 1
+            ? isCapsLock
+              ? element.textContent.toUpperCase()
+              : element.textContent.toLowerCase()
+            : element.textContent;
+      });
+    }
+  });
+});
+
 document.addEventListener("keydown", function (event) {
   if (event.key === "Shift") {
     let i = 0;
@@ -156,6 +173,46 @@ document.addEventListener("keyup", function (event) {
       i += 1;
     });
   }
+});
+
+button.forEach((element) => {
+  element.addEventListener("mousedown", (event) => {
+    if (element.textContent === "Shift") {
+      let i = 0;
+      button.forEach((element) => {
+        element.textContent =
+          element.textContent.length === 1
+            ? element.textContent.toUpperCase() ===
+              element.textContent.toLowerCase()
+              ? keyArray[i].altKey
+              : isCapsLock
+              ? element.textContent.toLowerCase()
+              : element.textContent.toUpperCase()
+            : element.textContent;
+        i += 1;
+      });
+    }
+  });
+});
+
+button.forEach((element) => {
+  element.addEventListener("mouseup", (event) => {
+    if (element.textContent === "Shift") {
+      let i = 0;
+      button.forEach((element) => {
+        element.textContent =
+          element.textContent.length === 1
+            ? element.textContent.toUpperCase() ===
+              element.textContent.toLowerCase()
+              ? keyArray[i].key
+              : isCapsLock
+              ? element.textContent.toUpperCase()
+              : element.textContent.toLowerCase()
+            : element.textContent;
+        i += 1;
+      });
+    }
+  });
 });
 
 button.forEach((element) => {
