@@ -9,7 +9,7 @@
   height: 100vh;
 }
 
-.keyboard {
+.box {
   width: 900px;
   height: 600px;
   border: 1px solid #ffffff;
@@ -19,5 +19,18 @@
 .textarea {
   width: 900px;
   height: 200px;
+  border: 1px solid #ffffff;
+  margin-bottom: 50px;
+}
+
+.keyboard {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.button {
+  height: 45px;
+  width: 45px;
+  margin: 5px;
   border: 1px solid #ffffff;
 }
