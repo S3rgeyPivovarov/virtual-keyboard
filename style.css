@@ -21,6 +21,9 @@
   height: 200px;
   border: 1px solid #ffffff;
   margin-bottom: 50px;
+  background-color: black;
+  color: #ffffff;
+  padding: 10px;
 }
 
 .keyboard {

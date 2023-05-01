@@ -72,12 +72,28 @@ body.innerHTML = "<div class='box' id='box'>" + "hellow" + "</div>";
 const box = document.querySelector("#box");
 
 box.innerHTML =
-  "<div class='textarea' id='textarea'></div> <div class='keyboard' id='keyboard'></div>";
+  "<textarea class='textarea'></textarea> <div class='keyboard'></div>";
 
-const textarea = document.querySelector("#textarea");
+const textarea = document.querySelector(".textarea");
 
-const keyboard = document.querySelector("#keyboard");
+const keyboard = document.querySelector(".keyboard");
 
 keyArray.forEach((element) => {
-  keyboard.innerHTML += "<div class='button'>" + element.key + "</div>";
+  keyboard.innerHTML += "<div class='button' >" + element.key + "</div>";
+});
+
+const button = document.querySelectorAll(".button");
+
+button.forEach((element) => {
+  element.addEventListener("click", (event) => {
+    let selectionBefore = textarea.selectionEnd;
+    textarea.value =
+      textarea.value.substring(0, textarea.selectionStart) +
+      element.textContent +
+      textarea.value.substring(textarea.selectionEnd, textarea.value.length);
+    textarea.selectionEnd = selectionBefore + element.textContent.length;
+    textarea.focus();
+    // не верно работает с выделением
+    console.log(element.textContent);
+  });
 });
