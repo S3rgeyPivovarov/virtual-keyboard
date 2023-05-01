@@ -12,7 +12,13 @@ const keyArray = [
   { key: "0", altKey: ")", ruKey: "0", ruAltKey: ")" },
   { key: "-", altKey: "_", ruKey: "-", ruAltKey: "_" },
   { key: "=", altKey: "+", ruKey: "+", ruAltKey: "" },
-  { key: "Backspace", altKey: "", ruKey: "Backspace", ruAltKey: "" },
+  {
+    key: "Backspace",
+    altKey: "",
+    ruKey: "Backspace",
+    ruAltKey: "",
+    addWidth: 1,
+  },
   { key: "Tab", altKey: "", ruKey: "Tab", ruAltKey: "" },
   { key: "Q", altKey: "", ruKey: "Й", ruAltKey: "" },
   { key: "W", altKey: "", ruKey: "Ц", ruAltKey: "" },
@@ -28,7 +34,13 @@ const keyArray = [
   { key: "]", altKey: "}", ruKey: "Ъ", ruAltKey: "" },
   { key: "\\", altKey: "|", ruKey: "\\", ruAltKey: "/" },
   { key: "Del", altKey: "", ruKey: "Del", ruAltKey: "" },
-  { key: "Caps Lock", altKey: "", ruKey: "Caps Lock", ruAltKey: "" },
+  {
+    key: "Caps Lock",
+    altKey: "",
+    ruKey: "Caps Lock",
+    ruAltKey: "",
+    addWidth: 1,
+  },
   { key: "A", altKey: "", ruKey: "Ф", ruAltKey: "" },
   { key: "S", altKey: "", ruKey: "Ы", ruAltKey: "" },
   { key: "D", altKey: "", ruKey: "В", ruAltKey: "" },
@@ -40,8 +52,8 @@ const keyArray = [
   { key: "L", altKey: "", ruKey: "Д", ruAltKey: "" },
   { key: ";", altKey: ":", ruKey: "Ж", ruAltKey: "" },
   { key: "'", altKey: '"', ruKey: "Э", ruAltKey: "" },
-  { key: "Enter", altKey: "", ruKey: "Enter", ruAltKey: "" },
-  { key: "Shift", altKey: "", ruKey: "Shift", ruAltKey: "" },
+  { key: "Enter", altKey: "", ruKey: "Enter", ruAltKey: "", addWidth: 1 },
+  { key: "Shift", altKey: "", ruKey: "Shift", ruAltKey: "", addWidth: 1 },
   { key: "Z", altKey: "", ruKey: "Я", ruAltKey: "" },
   { key: "X", altKey: "", ruKey: "Ч", ruAltKey: "" },
   { key: "C", altKey: "", ruKey: "С", ruAltKey: "" },
@@ -52,23 +64,22 @@ const keyArray = [
   { key: ",", altKey: "<", ruKey: "Б", ruAltKey: "" },
   { key: ".", altKey: ">", ruKey: "Ю", ruAltKey: "" },
   { key: "/", altKey: "?", ruKey: ".", ruAltKey: "," },
-  { key: "Shift", altKey: "", ruKey: "Shift", ruAltKey: "" },
+  { key: "Up", altKey: "", ruKey: "Up", ruAltKey: "" },
+  { key: "Shift", altKey: "", ruKey: "Shift", ruAltKey: "", addWidth: 1 },
   { key: "Ctrl", altKey: "", ruKey: "Ctrl", ruAltKey: "" },
-  { key: "Fn", altKey: "", ruKey: "Fn", ruAltKey: "" },
-  { key: "Windows", altKey: "", ruKey: "Windows", ruAltKey: "" },
+  { key: "Win", altKey: "", ruKey: "Win", ruAltKey: "" },
   { key: "Alt", altKey: "", ruKey: "Alt", ruAltKey: "" },
-  { key: "Spacebar", altKey: "", ruKey: "Spacebar", ruAltKey: "" },
+  { key: "Spacebar", altKey: "", ruKey: "Spacebar", ruAltKey: "", addWidth: 6 },
   { key: "Alt", altKey: "", ruKey: "Alt", ruAltKey: "" },
+  { key: "Left", altKey: "", ruKey: "Left", ruAltKey: "" },
+  { key: "Down", altKey: "", ruKey: "Down", ruAltKey: "" },
+  { key: "Right", altKey: "", ruKey: "Right", ruAltKey: "" },
   { key: "Ctrl", altKey: "", ruKey: "Ctrl", ruAltKey: "" },
-  { key: "Left Arrow", altKey: "", ruKey: "Left Arrow", ruAltKey: "" },
-  { key: "Up Arrow", altKey: "", ruKey: "Up Arrow", ruAltKey: "" },
-  { key: "Down Arrow", altKey: "", ruKey: "Down Arrow", ruAltKey: "" },
-  { key: "Right Arrow", altKey: "", ruKey: "Right Arrow", ruAltKey: "" },
 ];
 
 const body = document.querySelector("#body");
 
-body.innerHTML = "<div class='box' id='box'>" + "hellow" + "</div>";
+body.innerHTML = "<div class='box' id='box'></div>";
 
 const box = document.querySelector("#box");
 
@@ -81,7 +92,13 @@ const keyboard = document.querySelector(".keyboard");
 
 keyArray.forEach((element) => {
   keyboard.innerHTML +=
-    "<div class='button' >" +
+    "<div class='button' " +
+    (element.addWidth === 1
+      ? 'style="width: 100px"'
+      : element.addWidth === 6
+      ? 'style="width: 375px"'
+      : "") +
+    ">" +
     (element.key.length < 2 ? element.key.toLowerCase() : element.key) +
     "</div>";
 });
