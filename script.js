@@ -90,7 +90,7 @@ const textarea = document.querySelector(".textarea");
 
 const keyboard = document.querySelector(".keyboard");
 
-let isKeyEng = localStorage.getItem("isKeyEng") || "en";
+let keyLang = localStorage.getItem("keyLang") || "en";
 
 let isCapsLock = false;
 
@@ -107,7 +107,7 @@ keyArray.forEach((element) => {
 
 const button = document.querySelectorAll(".button");
 
-if (isKeyEng === "en") {
+if (keyLang === "en") {
   let i = 0;
   button.forEach((element) => {
     element.altkey = keyArray[i].altKey;
@@ -129,13 +129,13 @@ if (isKeyEng === "en") {
 
 document.addEventListener("keydown", function (event) {
   if (event.altKey && event.ctrlKey) {
-    if (isKeyEng === "en") {
-      isKeyEng = "ru";
+    if (keyLang === "en") {
+      keyLang = "ru";
     } else {
-      isKeyEng = "en";
+      keyLang = "en";
     }
-    localStorage.setItem("isKeyEng", isKeyEng);
-    if (isKeyEng === "en") {
+    localStorage.setItem("keyLang", keyLang);
+    if (keyLang === "en") {
       let i = 0;
       button.forEach((element) => {
         element.altkey = keyArray[i].altKey;
@@ -196,7 +196,9 @@ document.addEventListener("keydown", function (event) {
         element.textContent.length === 1
           ? element.textContent.toUpperCase() ===
             element.textContent.toLowerCase()
-            ? element.altKey
+            ? keyLang === "en"
+              ? keyArray[i].altKey
+              : keyArray[i].ruAltKey
             : isCapsLock
             ? element.textContent.toUpperCase()
             : element.textContent.toLowerCase()
@@ -214,7 +216,9 @@ document.addEventListener("keyup", function (event) {
         element.textContent.length === 1
           ? element.textContent.toUpperCase() ===
             element.textContent.toLowerCase()
-            ? element.key
+            ? keyLang === "en"
+              ? keyArray[i].key
+              : keyArray[i].ruKey
             : isCapsLock
             ? element.textContent.toLowerCase()
             : element.textContent.toUpperCase()
@@ -233,7 +237,9 @@ button.forEach((element) => {
           element.textContent.length === 1
             ? element.textContent.toUpperCase() ===
               element.textContent.toLowerCase()
-              ? element.altKey
+              ? keyLang === "en"
+                ? keyArray[i].altKey
+                : keyArray[i].ruAltKey
               : isCapsLock
               ? element.textContent.toUpperCase()
               : element.textContent.toLowerCase()
@@ -253,7 +259,9 @@ button.forEach((element) => {
           element.textContent.length === 1
             ? element.textContent.toUpperCase() ===
               element.textContent.toLowerCase()
-              ? element.key
+              ? keyLang === "en"
+                ? keyArray[i].key
+                : keyArray[i].ruKey
               : isCapsLock
               ? element.textContent.toLowerCase()
               : element.textContent.toUpperCase()
@@ -293,5 +301,29 @@ button.forEach((element) => {
       textarea.value.substring(textarea.selectionEnd, textarea.value.length);
     textarea.selectionEnd = textarea.value.length - selectionNegativePos;
     textarea.focus();
+  });
+});
+
+document.addEventListener("keydown", function (event) {
+  button.forEach((element) => {
+    let item = event.key;
+    if (
+      element.key.toUpperCase() === item.toUpperCase() ||
+      element.altkey.toUpperCase() === item.toUpperCase()
+    ) {
+      element.style.outline = "4px solid #ffffff";
+    }
+  });
+});
+
+document.addEventListener("keyup", function (event) {
+  button.forEach((element) => {
+    let item = event.key;
+    if (
+      element.key.toUpperCase() === item.toUpperCase() ||
+      element.altkey.toUpperCase() === item.toUpperCase()
+    ) {
+      element.style.outline = "1px solid #ffffff";
+    }
   });
 });
