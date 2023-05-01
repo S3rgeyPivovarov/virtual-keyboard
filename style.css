@@ -37,3 +37,8 @@
   margin: 5px;
   border: 1px solid #ffffff;
 }
+
+.button:active {
+  box-shadow: 3px 3px #ffffff;
+  transition: 0.3s;
+}

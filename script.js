@@ -27,6 +27,7 @@ const keyArray = [
   { key: "[", altKey: "{", ruKey: "Х", ruAltKey: "" },
   { key: "]", altKey: "}", ruKey: "Ъ", ruAltKey: "" },
   { key: "\\", altKey: "|", ruKey: "\\", ruAltKey: "/" },
+  { key: "Del", altKey: "", ruKey: "Del", ruAltKey: "" },
   { key: "Caps Lock", altKey: "", ruKey: "Caps Lock", ruAltKey: "" },
   { key: "A", altKey: "", ruKey: "Ф", ruAltKey: "" },
   { key: "S", altKey: "", ruKey: "Ы", ruAltKey: "" },
@@ -79,21 +80,67 @@ const textarea = document.querySelector(".textarea");
 const keyboard = document.querySelector(".keyboard");
 
 keyArray.forEach((element) => {
-  keyboard.innerHTML += "<div class='button' >" + element.key + "</div>";
+  keyboard.innerHTML +=
+    "<div class='button' >" +
+    (element.key.length < 2 ? element.key.toLowerCase() : element.key) +
+    "</div>";
 });
 
 const button = document.querySelectorAll(".button");
 
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Shift") {
+    button.forEach((element) => {
+      element.textContent =
+        element.textContent.length === 1
+          ? element.textContent.toUpperCase()
+          : element.textContent;
+    });
+  }
+});
+
+document.addEventListener("keyup", function (event) {
+  if (event.key === "Shift") {
+    button.forEach((element) => {
+      element.textContent =
+        element.textContent.length === 1
+          ? element.textContent.toLowerCase()
+          : element.textContent;
+    });
+  }
+});
+
+const isCapsLock = event.getModifierState("CapsLock");
+console.log(isCapsLock);
+
 button.forEach((element) => {
   element.addEventListener("click", (event) => {
-    let selectionBefore = textarea.selectionEnd;
+    let text = element.textContent;
+    let selectionNegativePos = textarea.value.length - textarea.selectionEnd;
+    if (text === "Tab") {
+      text = "\t";
+    } else if (text === "Enter") {
+      text = "\n";
+    } else if (text === "Backspace") {
+      textarea.value =
+        textarea.value.substring(0, textarea.selectionStart - 1) +
+        textarea.value.substring(textarea.selectionEnd, textarea.value.length);
+    } else if (text === "Del") {
+      textarea.value =
+        textarea.value.substring(0, textarea.selectionStart) +
+        textarea.value.substring(
+          textarea.selectionEnd + 1,
+          textarea.value.length
+        );
+      selectionNegativePos = selectionNegativePos - 1;
+    } else if (text === "Spacebar") {
+      text = " ";
+    }
     textarea.value =
       textarea.value.substring(0, textarea.selectionStart) +
-      element.textContent +
+      (text.length < 3 ? text : "") +
       textarea.value.substring(textarea.selectionEnd, textarea.value.length);
-    textarea.selectionEnd = selectionBefore + element.textContent.length;
+    textarea.selectionEnd = textarea.value.length - selectionNegativePos;
     textarea.focus();
-    // не верно работает с выделением
-    console.log(element.textContent);
   });
 });
