@@ -33,12 +33,12 @@ const keyArray = [
   { key: "[", altKey: "{", ruKey: "Х", ruAltKey: "" },
   { key: "]", altKey: "}", ruKey: "Ъ", ruAltKey: "" },
   { key: "\\", altKey: "|", ruKey: "\\", ruAltKey: "/" },
-  { key: "Del", altKey: "", ruKey: "Del", ruAltKey: "" },
+  { key: "Del", altKey: "Delete", ruKey: "Del", ruAltKey: "Delete" },
   {
     key: "Caps Lock",
-    altKey: "",
+    altKey: "CapsLock",
     ruKey: "Caps Lock",
-    ruAltKey: "",
+    ruAltKey: "CapsLock",
     addWidth: 1,
   },
   { key: "A", altKey: "", ruKey: "Ф", ruAltKey: "" },
@@ -64,22 +64,29 @@ const keyArray = [
   { key: ",", altKey: "<", ruKey: "Б", ruAltKey: "" },
   { key: ".", altKey: ">", ruKey: "Ю", ruAltKey: "" },
   { key: "/", altKey: "?", ruKey: ".", ruAltKey: "," },
-  { key: "Up", altKey: "", ruKey: "Up", ruAltKey: "" },
+  { key: "Up", altKey: "ArrowUp", ruKey: "Up", ruAltKey: "" },
   { key: "Shift", altKey: "", ruKey: "Shift", ruAltKey: "", addWidth: 1 },
   { key: "Ctrl", altKey: "", ruKey: "Ctrl", ruAltKey: "" },
-  { key: "Win", altKey: "", ruKey: "Win", ruAltKey: "" },
+  { key: "Win", altKey: "Meta", ruKey: "Win", ruAltKey: "Meta" },
   { key: "Alt", altKey: "", ruKey: "Alt", ruAltKey: "" },
-  { key: "Spacebar", altKey: "", ruKey: "Spacebar", ruAltKey: "", addWidth: 6 },
+  {
+    key: " ",
+    altKey: " ",
+    ruKey: " ",
+    ruAltKey: " ",
+    addWidth: 6,
+  },
   { key: "Alt", altKey: "", ruKey: "Alt", ruAltKey: "" },
-  { key: "Left", altKey: "", ruKey: "Left", ruAltKey: "" },
-  { key: "Down", altKey: "", ruKey: "Down", ruAltKey: "" },
-  { key: "Right", altKey: "", ruKey: "Right", ruAltKey: "" },
-  { key: "Ctrl", altKey: "", ruKey: "Ctrl", ruAltKey: "" },
+  { key: "Left", altKey: "ArrowLeft", ruKey: "Left", ruAltKey: "" },
+  { key: "Down", altKey: "ArrowDown", ruKey: "Down", ruAltKey: "" },
+  { key: "Right", altKey: "ArrowRight", ruKey: "Right", ruAltKey: "" },
+  { key: "Ctrl", altKey: "Control", ruKey: "Ctrl", ruAltKey: "Control" },
 ];
 
 const body = document.querySelector("#body");
 
-body.innerHTML = "<div class='box' id='box'></div>";
+body.innerHTML =
+  "<div>Привет:) Windows. Изменение языка: Ctrl+Alt</div><div class='box' id='box'></div>";
 
 const box = document.querySelector("#box");
 
@@ -94,6 +101,8 @@ let keyLang = localStorage.getItem("keyLang") || "en";
 
 let isCapsLock = false;
 
+let isShift = false;
+
 keyArray.forEach((element) => {
   keyboard.innerHTML +=
     "<div class='button' " +
@@ -107,25 +116,37 @@ keyArray.forEach((element) => {
 
 const button = document.querySelectorAll(".button");
 
-if (keyLang === "en") {
+function addInscriptionButton() {
   let i = 0;
   button.forEach((element) => {
-    element.altkey = keyArray[i].altKey;
-    element.key = keyArray[i].key;
     element.textContent =
-      element.key.length < 2 ? element.key.toLowerCase() : element.key;
-    i += 1;
-  });
-} else {
-  let i = 0;
-  button.forEach((element) => {
-    element.altkey = keyArray[i].ruAltKey;
-    element.key = keyArray[i].ruKey;
-    element.textContent =
-      element.key.length < 2 ? element.key.toLowerCase() : element.key;
+      keyArray[i].key.length < 2
+        ? keyLang === "en"
+          ? isShift
+            ? keyArray[i].altKey
+              ? keyArray[i].altKey
+              : isCapsLock
+              ? keyArray[i].key.toLowerCase()
+              : keyArray[i].key.toUpperCase()
+            : isCapsLock
+            ? keyArray[i].key.toUpperCase()
+            : keyArray[i].key.toLowerCase()
+          : isShift
+          ? keyArray[i].ruAltKey
+            ? keyArray[i].ruAltKey
+            : isCapsLock
+            ? keyArray[i].ruKey.toLowerCase()
+            : keyArray[i].ruKey.toUpperCase()
+          : isCapsLock
+          ? keyArray[i].ruKey.toUpperCase()
+          : keyArray[i].ruKey.toLowerCase()
+        : keyArray[i].ruKey;
+    element.id = i;
     i += 1;
   });
 }
+
+addInscriptionButton();
 
 document.addEventListener("keydown", function (event) {
   if (event.altKey && event.ctrlKey) {
@@ -135,117 +156,46 @@ document.addEventListener("keydown", function (event) {
       keyLang = "en";
     }
     localStorage.setItem("keyLang", keyLang);
-    if (keyLang === "en") {
-      let i = 0;
-      button.forEach((element) => {
-        element.altkey = keyArray[i].altKey;
-        element.key = keyArray[i].key;
-        element.textContent =
-          element.key.length < 2 ? element.key.toLowerCase() : element.key;
-        i += 1;
-      });
-    } else {
-      let i = 0;
-      button.forEach((element) => {
-        element.altkey = keyArray[i].ruAltKey;
-        element.key = keyArray[i].ruKey;
-        element.textContent =
-          element.key.length < 2 ? element.key.toLowerCase() : element.key;
-        i += 1;
-      });
-    }
   }
+  addInscriptionButton();
 });
 
 document.addEventListener("keydown", function (event) {
   console.log(event.key);
   if (event.key === "CapsLock") {
-    button.forEach((element) => {
-      element.textContent =
-        element.textContent.length === 1
-          ? isCapsLock
-            ? element.textContent.toUpperCase()
-            : element.textContent.toLowerCase()
-          : element.textContent;
-    });
     isCapsLock = !isCapsLock;
+    addInscriptionButton();
   }
 });
 
 button.forEach((element) => {
   element.addEventListener("click", (event) => {
     if (element.textContent === "Caps Lock") {
-      button.forEach((element) => {
-        element.textContent =
-          element.textContent.length === 1
-            ? isCapsLock
-              ? element.textContent.toUpperCase()
-              : element.textContent.toLowerCase()
-            : element.textContent;
-      });
       isCapsLock = !isCapsLock;
+      addInscriptionButton();
     }
   });
 });
 
 document.addEventListener("keydown", function (event) {
   if (event.key === "Shift") {
-    let i = 0;
-    button.forEach((element) => {
-      element.textContent =
-        element.textContent.length === 1
-          ? element.textContent.toUpperCase() ===
-            element.textContent.toLowerCase()
-            ? keyLang === "en"
-              ? keyArray[i].altKey
-              : keyArray[i].ruAltKey
-            : isCapsLock
-            ? element.textContent.toUpperCase()
-            : element.textContent.toLowerCase()
-          : element.textContent;
-      i += 1;
-    });
+    isShift = true;
+    addInscriptionButton();
   }
 });
 
 document.addEventListener("keyup", function (event) {
   if (event.key === "Shift") {
-    let i = 0;
-    button.forEach((element) => {
-      element.textContent =
-        element.textContent.length === 1
-          ? element.textContent.toUpperCase() ===
-            element.textContent.toLowerCase()
-            ? keyLang === "en"
-              ? keyArray[i].key
-              : keyArray[i].ruKey
-            : isCapsLock
-            ? element.textContent.toLowerCase()
-            : element.textContent.toUpperCase()
-          : element.textContent;
-      i += 1;
-    });
+    isShift = false;
+    addInscriptionButton();
   }
 });
 
 button.forEach((element) => {
   element.addEventListener("mousedown", (event) => {
     if (element.textContent === "Shift") {
-      let i = 0;
-      button.forEach((element) => {
-        element.textContent =
-          element.textContent.length === 1
-            ? element.textContent.toUpperCase() ===
-              element.textContent.toLowerCase()
-              ? keyLang === "en"
-                ? keyArray[i].altKey
-                : keyArray[i].ruAltKey
-              : isCapsLock
-              ? element.textContent.toUpperCase()
-              : element.textContent.toLowerCase()
-            : element.textContent;
-        i += 1;
-      });
+      isShift = true;
+      addInscriptionButton();
     }
   });
 });
@@ -253,23 +203,30 @@ button.forEach((element) => {
 button.forEach((element) => {
   element.addEventListener("mouseup", (event) => {
     if (element.textContent === "Shift") {
-      let i = 0;
-      button.forEach((element) => {
-        element.textContent =
-          element.textContent.length === 1
-            ? element.textContent.toUpperCase() ===
-              element.textContent.toLowerCase()
-              ? keyLang === "en"
-                ? keyArray[i].key
-                : keyArray[i].ruKey
-              : isCapsLock
-              ? element.textContent.toLowerCase()
-              : element.textContent.toUpperCase()
-            : element.textContent;
-        i += 1;
-      });
+      isShift = false;
+      addInscriptionButton();
     }
   });
+});
+
+function editTextArea(text) {
+  let selectionNegativePos = textarea.value.length - textarea.selectionEnd;
+  textarea.value =
+    textarea.value.substring(0, textarea.selectionStart) +
+    (text.length < 3 ? text : "") +
+    textarea.value.substring(textarea.selectionEnd, textarea.value.length);
+  textarea.selectionEnd = textarea.value.length - selectionNegativePos;
+  textarea.focus();
+}
+
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Tab") {
+    if (event.key == "Tab") {
+      event.preventDefault();
+      text = "\t";
+      editTextArea(text);
+    }
+  }
 });
 
 button.forEach((element) => {
@@ -292,9 +249,16 @@ button.forEach((element) => {
           textarea.value.length
         );
       selectionNegativePos = selectionNegativePos - 1;
-    } else if (text === "Spacebar") {
-      text = " ";
+    } else if (text === "Up") {
+      text = "▲";
+    } else if (text === "Down") {
+      text = "▼";
+    } else if (text === "Left") {
+      text = "◄";
+    } else if (text === "Right") {
+      text = "►";
     }
+
     textarea.value =
       textarea.value.substring(0, textarea.selectionStart) +
       (text.length < 3 ? text : "") +
@@ -304,26 +268,43 @@ button.forEach((element) => {
   });
 });
 
-document.addEventListener("keydown", function (event) {
-  button.forEach((element) => {
-    let item = event.key;
+document.addEventListener("keydown", (event) => {
+  let i = 0;
+  keyArray.forEach((element) => {
     if (
-      element.key.toUpperCase() === item.toUpperCase() ||
-      element.altkey.toUpperCase() === item.toUpperCase()
+      event.key.toLowerCase() === element.key.toLowerCase() ||
+      event.key.toLowerCase() === element.altKey.toLowerCase() ||
+      event.key.toLowerCase() === element.ruKey.toLowerCase() ||
+      event.key.toLowerCase() === element.ruAltKey.toLowerCase()
     ) {
-      element.style.outline = "4px solid #ffffff";
+      button[i].classList.add("clickStyle");
+      console.log("yep");
     }
+    i += 1;
   });
 });
 
-document.addEventListener("keyup", function (event) {
-  button.forEach((element) => {
-    let item = event.key;
+document.addEventListener("keyup", (event) => {
+  let i = 0;
+  keyArray.forEach((element) => {
     if (
-      element.key.toUpperCase() === item.toUpperCase() ||
-      element.altkey.toUpperCase() === item.toUpperCase()
+      event.key.toLowerCase() == element.key.toLowerCase() ||
+      event.key.toLowerCase() == element.altKey.toLowerCase() ||
+      event.key.toLowerCase() == element.ruKey.toLowerCase() ||
+      event.key.toLowerCase() == element.ruAltKey.toLowerCase()
     ) {
-      element.style.outline = "1px solid #ffffff";
+      button[i].classList.remove("clickStyle");
+      console.log("yep");
     }
+    i += 1;
+  });
+});
+
+button.forEach((element) => {
+  element.addEventListener("mouseup", (event) => {
+    element.classList.remove("clickStyle");
+  });
+  element.addEventListener("mousedown", (event) => {
+    element.classList.add("clickStyle");
   });
 });

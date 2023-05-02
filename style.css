@@ -48,6 +48,7 @@
   line-height: 2.5;
 }
 
-.button:active {
+.clickStyle {
   outline: 4px solid #ffffff;
+  transition: 0.1s;
 }
