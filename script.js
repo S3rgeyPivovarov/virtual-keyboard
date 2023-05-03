@@ -66,7 +66,7 @@ const keyArray = [
   { key: "/", altKey: "?", ruKey: ".", ruAltKey: "," },
   { key: "Up", altKey: "ArrowUp", ruKey: "Up", ruAltKey: "" },
   { key: "Shift", altKey: "", ruKey: "Shift", ruAltKey: "", addWidth: 1 },
-  { key: "Ctrl", altKey: "", ruKey: "Ctrl", ruAltKey: "" },
+  { key: "Ctrl", altKey: "Control", ruKey: "Ctrl", ruAltKey: "Control" },
   { key: "Win", altKey: "Meta", ruKey: "Win", ruAltKey: "Meta" },
   { key: "Alt", altKey: "", ruKey: "Alt", ruAltKey: "" },
   {
@@ -268,6 +268,10 @@ button.forEach((element) => {
   });
 });
 
+function clickAnimation() {
+  12;
+}
+
 document.addEventListener("keydown", (event) => {
   let i = 0;
   keyArray.forEach((element) => {
@@ -278,10 +282,10 @@ document.addEventListener("keydown", (event) => {
       event.key.toLowerCase() === element.ruAltKey.toLowerCase()
     ) {
       button[i].classList.add("clickStyle");
-      console.log("yep");
     }
     i += 1;
   });
+  textarea.focus();
 });
 
 document.addEventListener("keyup", (event) => {
@@ -294,17 +298,19 @@ document.addEventListener("keyup", (event) => {
       event.key.toLowerCase() == element.ruAltKey.toLowerCase()
     ) {
       button[i].classList.remove("clickStyle");
-      console.log("yep");
     }
     i += 1;
   });
+  textarea.focus();
 });
 
 button.forEach((element) => {
   element.addEventListener("mouseup", (event) => {
     element.classList.remove("clickStyle");
+    textarea.focus();
   });
   element.addEventListener("mousedown", (event) => {
     element.classList.add("clickStyle");
+    textarea.focus();
   });
 });
