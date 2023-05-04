@@ -1,5 +1,5 @@
 const keyArray = [
-  { key: "`", altKey: "~", ruKey: "ё", ruAltKey: "Ё" },
+  { key: "`", altKey: "~", ruKey: "ё", ruAltKey: "Dead" },
   { key: "1", altKey: "!", ruKey: "1", ruAltKey: "!" },
   { key: "2", altKey: "@", ruKey: "2", ruAltKey: '"' },
   { key: "3", altKey: "#", ruKey: "3", ruAltKey: "№" },
